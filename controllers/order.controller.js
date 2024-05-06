@@ -16,7 +16,7 @@ exports.order = async (request, response) => {
         });
 
         // Tambahkan detail pesanan untuk setiap item dalam order_detail
-             orderDetails = [];
+        const orderDetails = [];
         for (const item of order_Detail) {
             const { foodID, price, quantity } = item;
 
@@ -50,10 +50,21 @@ exports.order = async (request, response) => {
 
 
 exports.getAllHistory = async (request, response) => {
-    let history = await orderModel.findAll()
-    return response.json({
-        success: true,
-        data: history,
-        messaage: `All history have been loaded`
-    })
-}
+
+    try {
+        let history = await orderModel.findAll({
+            include: [{
+                model: detailModel,
+                as : 'order_detail',
+                include: [foodModel]
+            }]
+        })
+        return response.json({
+            success: true,
+            data: history,
+            messaage: `All history have been loaded`
+        })
+    } catch(error) {
+        response.status(500).json({error: "Website mu eror cok"})
+    }
+} 
