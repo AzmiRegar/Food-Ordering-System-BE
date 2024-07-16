@@ -65,6 +65,6 @@ exports.getAllHistory = async (request, response) => {
             messaage: `All history have been loaded`
         })
     } catch(error) {
-        response.status(500).json({error: "Website mu eror cok"})
+        response.status(500).json({error: "Kesalahan Server"})
     }
 } 
